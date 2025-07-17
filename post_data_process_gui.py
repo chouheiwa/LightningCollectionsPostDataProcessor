@@ -207,6 +207,9 @@ class DataProcessGUI:
                     
                     # 调用处理函数
                     data_list = parse_result(result_dir, final_result_dir)
+                    # 删除data_list中的最后一行
+                    data_list.pop()
+                    all_data_list.extend(data_list)
                     
                     # 更新状态
                     self.tree.item(item, values=(folder, '完成', self.tree.item(item, 'values')[2]))

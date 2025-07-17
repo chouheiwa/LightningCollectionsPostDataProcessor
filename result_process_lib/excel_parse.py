@@ -53,7 +53,7 @@ class ExcelParse:
 
         return {
             'model': self.model, 'dataset': self.dataset,
-            'Miou': self.data['test/MeanIoU'] * 100, 'F1_score': self.data['test/MeanIoU'] * 100,
+            'Miou': self.data['test/MeanIoU'] * 100, 'F1_score': self.data['test/BinaryF1Score'] * 100,
             'Accuracy': self.data['test/BinaryAccuracy'] * 100, 'Specificity': self.data['test/BinarySpecificity'] * 100,
             'Sensitivity': self.data['test/BinaryRecall'] * 100, 'DSC': self.data['test/Dice'] * 100,
             'Precision': self.data['test/BinaryPrecision'] * 100,
