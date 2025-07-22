@@ -26,6 +26,8 @@ show_help() {
     echo "  6  启动文件重组工具 (GUI版本)"
     echo "  7  启动图片尺寸调整工具 (命令行版本)"
     echo "  8  启动图片尺寸调整工具 (GUI版本)"
+    echo "  9  启动PNG透明像素转黑色工具 (命令行版本)"
+    echo "  10 启动PNG透明像素转黑色工具 (GUI版本)"
     echo "  h  显示此帮助信息"
     echo "  q  退出"
     echo ""
@@ -92,6 +94,16 @@ start_image_resizer_gui() {
     python3 image_resizer_gui.py
 }
 
+start_transparent_to_black() {
+    echo -e "${GREEN}启动PNG透明像素转黑色工具 (命令行版本)...${NC}"
+    python3 transparent_to_black.py "$@"
+}
+
+start_transparent_to_black_gui() {
+    echo -e "${GREEN}启动PNG透明像素转黑色工具 (GUI版本)...${NC}"
+    python3 transparent_to_black_gui.py
+}
+
 # 主菜单
 main_menu() {
     while true; do
@@ -105,10 +117,12 @@ main_menu() {
         echo "6. 文件重组工具 (GUI)"
         echo "7. 图片尺寸调整工具 (命令行)"
         echo "8. 图片尺寸调整工具 (GUI)"
+        echo "9. PNG透明像素转黑色工具 (命令行)"
+        echo "10. PNG透明像素转黑色工具 (GUI)"
         echo "h. 显示帮助"
         echo "q. 退出"
         echo ""
-        read -p "请选择 (1-8/h/q): " choice
+        read -p "请选择 (1-10/h/q): " choice
         
         case $choice in
             1)
@@ -159,6 +173,32 @@ main_menu() {
             8)
                 start_image_resizer_gui
                 ;;
+            9)
+                echo "请输入输入路径（PNG文件或包含PNG文件的文件夹）:"
+                read -p "输入路径: " input_path
+                if [ -n "$input_path" ]; then
+                    echo "请输入输出路径（可选，按回车跳过）:"
+                    read -p "输出路径: " output_path
+                    echo "是否递归处理子文件夹？(y/n)"
+                    read -p "递归处理: " recursive
+                    if [ "$recursive" = "y" ] || [ "$recursive" = "Y" ]; then
+                        if [ -n "$output_path" ]; then
+                            start_transparent_to_black "$input_path" -o "$output_path" -r
+                        else
+                            start_transparent_to_black "$input_path" -r
+                        fi
+                    else
+                        if [ -n "$output_path" ]; then
+                            start_transparent_to_black "$input_path" -o "$output_path"
+                        else
+                            start_transparent_to_black "$input_path"
+                        fi
+                    fi
+                fi
+                ;;
+            10)
+                start_transparent_to_black_gui
+                ;;
             h|H)
                 show_help
                 ;;
@@ -208,6 +248,13 @@ main() {
                 ;;
             8)
                 start_image_resizer_gui
+                ;;
+            9)
+                shift
+                start_transparent_to_black "$@"
+                ;;
+            10)
+                start_transparent_to_black_gui
                 ;;
             -h|--help)
                 show_help
