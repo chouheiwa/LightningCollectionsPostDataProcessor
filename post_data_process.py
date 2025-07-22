@@ -30,17 +30,17 @@ def create_zip_file(zip_file_path, run_path, result_path, relative_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run_dir", type=str, help="run progress based directory")
-    parser.add_argument("--result_dir", type=str,
-                        help="Result Root Directory")
-    parser.add_argument("--final_result_dir", type=str,
-                        help="Final Zip Result Root Directory")
-    parser.add_argument("--only_parse", type=bool, default=False,
-                        help="Only parse the result")
+    parser.add_argument("--base_path", type=str, required=True,
+                        help="Base directory containing run folders")
     args = parser.parse_args()
     
-    # 基础路径
-    base_path = "/Users/chouheiwa/Downloads/data_results_current"
+    # 使用命令行参数的基础路径
+    base_path = args.base_path
+    
+    # 检查基础路径是否存在
+    if not os.path.exists(base_path):
+        print(f"错误: 基础路径 {base_path} 不存在")
+        exit(1)
     
     # 获取所有run文件夹
     all_dirs = get_dirs(base_path)
